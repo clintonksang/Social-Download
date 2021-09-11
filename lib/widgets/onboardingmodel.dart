@@ -8,7 +8,7 @@ class PageData {
   final IconData? icon;
   final Color bgColor;
   final Color textColor;
- LottieBuilder ? lottieBuilder;
+  LottieBuilder? lottieBuilder;
   PageData({
     this.title,
     this.icon,
@@ -21,19 +21,23 @@ class PageData {
 class OnboardingExample extends StatelessWidget {
   final List<PageData> pages = [
     PageData(
-      lottieBuilder: LottieBuilder.asset("assets/lottie/social_media.json"),
+      lottieBuilder: LottieBuilder.asset("assets/lottie/swipeleft.json"),
       title: "Introducing\nSocial Download",
       textColor: Colors.white,
       bgColor: Color(0xFFFDBFDD),
     ),
     PageData(
-      icon: Icons.hdr_weak,
+      // icon: Icons.hdr_weak,
+      lottieBuilder: LottieBuilder.asset("assets/lottie/social_media.json"),
+
       title: "Download \nInstagram Reels &\nYoutube Videos",
       bgColor: Color(0xFFFFFFFF),
     ),
     PageData(
-      icon: Icons.bubble_chart,
+      // icon: Icons.bubble_chart,
       title: "Let's Start",
+      lottieBuilder: LottieBuilder.asset("assets/lottie/excited.json"),
+
       bgColor: Color(0xFF0043D0),
       textColor: Colors.white,
     ),
@@ -48,7 +52,7 @@ class OnboardingExample extends StatelessWidget {
       home: Scaffold(
         body: ConcentricPageView(
           colors: colors,
-          
+
 //          opacityFactor: 1.0,
 //          scaleFactor: 0.0,
           radius: 30,
@@ -110,7 +114,6 @@ class PageCard extends StatelessWidget {
       child: Column(
 //        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          
           _buildPicture(context),
           SizedBox(height: 30),
           _buildText(context),
@@ -178,7 +181,9 @@ class PageCard extends StatelessWidget {
           //   size: iconSize,
           //   color: page.bgColor.withRed(111).withGreen(220),
           // ),
-          LottieBuilder.asset("assets/lottie/social_media.json")
+          Container(
+            child: page.lottieBuilder,
+          )
         ],
       ),
     );
