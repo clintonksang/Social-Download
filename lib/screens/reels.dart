@@ -7,7 +7,7 @@ import 'package:lottie/lottie.dart';
 import 'package:social_downloader/screens/youtube.dart';
 
 class ReelsWidget extends StatefulWidget {
-   final GlobalKey<FabCircularMenuState> fabKey = GlobalKey();
+  final GlobalKey<FabCircularMenuState> fabKey = GlobalKey();
 
   ReelsWidget({Key? key}) : super(key: key);
 
@@ -15,16 +15,18 @@ class ReelsWidget extends StatefulWidget {
   _ReelsWidgetState createState() => _ReelsWidgetState();
 }
 
-class _ReelsWidgetState extends State<ReelsWidget> with SingleTickerProviderStateMixin {
+class _ReelsWidgetState extends State<ReelsWidget>
+    with SingleTickerProviderStateMixin {
   // SingleTickerProviderStateMixin {
 
-// REELS 
-  FlutterInsta flutterInsta = FlutterInsta(); // create instance of FlutterInsta class
+// REELS
+  FlutterInsta flutterInsta =
+      FlutterInsta(); // create instance of FlutterInsta class
   TextEditingController usernameController = TextEditingController();
   bool pressed = false;
 
 // REELS END
-  late double _scale;
+  // late double _scale;
   bool hasTapped = false;
   late AnimationController _controller;
 
@@ -33,7 +35,7 @@ class _ReelsWidgetState extends State<ReelsWidget> with SingleTickerProviderStat
   void initState() {
     // REELS
     initializeDownloader();
-    
+
     textController = TextEditingController();
     _controller = AnimationController(
       vsync: this,
@@ -47,14 +49,14 @@ class _ReelsWidgetState extends State<ReelsWidget> with SingleTickerProviderStat
       });
     super.initState();
   }
+
   // REELS
-    void initializeDownloader() async {
+  void initializeDownloader() async {
     WidgetsFlutterBinding.ensureInitialized();
-    await FlutterDownloader.initialize(debug: true // optional: set false to disable printing logs to console
+    await FlutterDownloader.initialize(
+        debug: false // optional: set false to disable printing logs to console
         );
   }
-
-
 
   TextEditingController textController = TextEditingController();
   final formKey = GlobalKey<FormState>();
@@ -68,16 +70,16 @@ class _ReelsWidgetState extends State<ReelsWidget> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
-    _scale = 1 - _controller.value;
+    // _scale = 1 - _controller.value;
     return Form(
       key: formKey,
       autovalidateMode: AutovalidateMode.always,
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: Colors.grey[900],
-      //  floatingActionButton:
-               floatingActionButton: FabCircularMenu(
-                              alignment: Alignment.bottomRight,
+        //  floatingActionButton:
+        floatingActionButton: FabCircularMenu(
+            alignment: Alignment.bottomRight,
             ringColor: Colors.pinkAccent,
             ringDiameter: 500.0,
             ringWidth: 150.0,
@@ -91,33 +93,42 @@ class _ReelsWidgetState extends State<ReelsWidget> with SingleTickerProviderStat
             animationDuration: const Duration(milliseconds: 800),
             animationCurve: Curves.easeInOutCirc,
             onDisplayChange: (isOpen) {
-              _showSnackBar(context, "The menu is ${isOpen ? "open" : "closed"}");
+              _showSnackBar(
+                  context, "The menu is ${isOpen ? "open" : "closed"}");
             },
-          children: <Widget>[
-               RawMaterialButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Youtube()));
-                },
+            children: <Widget>[
+              // Container(),
+              RawMaterialButton(
+                onPressed: ()  {
+                   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>Youtube(),));
+                super.dispose();
+               },
                 shape: CircleBorder(),
                 padding: const EdgeInsets.all(24.0),
-                child: Text("Youtube"),
+                child: Text("Youtube",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold),
+                ),
               ),
-           
-                            RawMaterialButton(
+              RawMaterialButton(
                 onPressed: () {
-                  _showSnackBar(context, "You pressed 1");
-                },
+                   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>Youtube(),));
+                super.dispose();
+               },
                 shape: CircleBorder(),
                 padding: const EdgeInsets.all(24.0),
-                child: Container(width:   30,
-                height: 30,
-                decoration: BoxDecoration(
-                  image: DecorationImage(image: AssetImage("assets/images/youtube.png"))
-                ),),
+                child: Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage("assets/images/youtube.png"))),
+                ),
               ),
-          ]
-        ),
-       
+              // Container()
+            ]),
+
         body: SafeArea(
           child: Container(
             width: double.infinity,
@@ -130,7 +141,6 @@ class _ReelsWidgetState extends State<ReelsWidget> with SingleTickerProviderStat
               children: [
                 //AppBar Section
 
-        
                 Padding(
                   padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
                   child: Row(
@@ -205,7 +215,6 @@ class _ReelsWidgetState extends State<ReelsWidget> with SingleTickerProviderStat
                             Padding(
                               padding: EdgeInsets.fromLTRB(20, 50, 20, 0),
                               child: TextFormField(
-                               
                                 controller: textController,
                                 // onFieldSubmitted: hasSubmitted,
                                 obscureText: false,
@@ -255,64 +264,61 @@ class _ReelsWidgetState extends State<ReelsWidget> with SingleTickerProviderStat
                               ),
                             ),
 
-                             //Button
-                !hasTapped
-                    ? Padding(
-                        padding: EdgeInsets.only(top: 40),
-                        child: Center(
-                          child: GestureDetector(
-                           onTap: 
-                           (){
-                             download();
-                             setState(() async{
-                               hasTapped =true;
-                             });
-                           },
-                            child: Transform.scale(
-                              scale: _scale,
-                              child: _animatedButtonUI,
-                            ),
-                          ),
-                        ),
-                      )
-                    : Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Text("Downloading"),
-                    ),
+                            //Button
+                            !hasTapped
+                                ? Padding(
+                                    padding: EdgeInsets.only(top: 40),
+                                    child: Center(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          download();
+                                          setState(() async {
+                                            hasTapped = true;
+                                          });
+                                        },
+                                        child: _animatedButtonUI,
+                                      ),
+                                    ),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.only(top: 10),
+                                    child: Text("Downloading"),
+                                  ),
 
-                //SocialMediaAnimation
-                !hasTapped ?Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 10),
-                          child: Container(
-                            width: 300,
-                            height: 100,
-                            child:  LottieBuilder.asset('assets/lottie/ig.json'),
-                          ),
-                        ),
-                      ):Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 10),
-                          child: Container(
-                            width: 300,
-                            height: 150,
-                            child:  GestureDetector(
-                              onTap: (){
-                             hasTapped=true;
-                              },
-                              child: LottieBuilder.asset('assets/lottie/downloading.json')),
-                          ),
-                        ),
-                      )
-                
+                            //SocialMediaAnimation
+                            !hasTapped
+                                ? Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(top: 10),
+                                      child: Container(
+                                        width: 300,
+                                        height: 100,
+                                        child: LottieBuilder.asset(
+                                            'assets/lottie/ig.json'),
+                                      ),
+                                    ),
+                                  )
+                                : Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(top: 10),
+                                      child: Container(
+                                        width: 300,
+                                        height: 150,
+                                        child: GestureDetector(
+                                            onTap: () {
+                                              hasTapped = true;
+                                            },
+                                            child: LottieBuilder.asset(
+                                                'assets/lottie/downloading.json')),
+                                      ),
+                                    ),
+                                  )
                           ],
                         ),
                       ),
                     ),
                   ),
                 ),
-
-               
               ],
             ),
           ),
@@ -353,16 +359,13 @@ class _ReelsWidgetState extends State<ReelsWidget> with SingleTickerProviderStat
         ),
       );
 
-
-
-    void _showSnackBar(BuildContext context, String message) {
-    Scaffold.of(context).showSnackBar(
-        SnackBar(
+  void _showSnackBar(BuildContext context, String message) {
+    Scaffold.of(context).showSnackBar(SnackBar(
       content: Text(message),
       duration: const Duration(milliseconds: 1000),
-        )
-    );
+    ));
   }
+
 //REELS
 //Download reel video on button clickl
   void download() async {
@@ -373,7 +376,8 @@ class _ReelsWidgetState extends State<ReelsWidget> with SingleTickerProviderStat
       savedDir: '/sdcard/Download',
       showNotification: true,
       // show download progress in status bar (for Android)
-      openFileFromNotification: true, // click on notification to open downloaded file (for Android)
+      openFileFromNotification:
+          true, // click on notification to open downloaded file (for Android)
     ).whenComplete(() {
       Fluttertoast.showToast(msg: "Download Has Started");
       setState(() {
