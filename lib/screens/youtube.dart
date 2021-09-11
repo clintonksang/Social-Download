@@ -10,7 +10,6 @@ import 'dart:async';
 
 import 'package:social_downloader/screens/reels.dart';
 class Youtube extends StatefulWidget {
-   final GlobalKey<FabCircularMenuState> fabKey = GlobalKey();
 
   Youtube({Key? key}) : super(key: key);
 
@@ -18,31 +17,20 @@ class Youtube extends StatefulWidget {
   _YoutubeState createState() => _YoutubeState();
 }
 
-class _YoutubeState extends State<Youtube> with SingleTickerProviderStateMixin {
-  // SingleTickerProviderStateMixin {
+class _YoutubeState extends State<Youtube> {
 
-
- 
 // FB END
-  late double _scale;
   bool hasTapped = false;
 
-  // bool hasTapped = false;
-
-  get fabKey => this.fabKey;
-  // String  youtube_Link = await TextEditingController.
+   TextEditingController textController = TextEditingController();
   @override
   void initState() {
  
-    textController = TextEditingController();
-//  downloadVideo();
-//  initializeDownloader();
     super.initState();
   }
 
   
 
-  TextEditingController textController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -61,14 +49,14 @@ class _YoutubeState extends State<Youtube> with SingleTickerProviderStateMixin {
       //  floatingActionButton:
                floatingActionButton: FabCircularMenu(
                               alignment: Alignment.bottomRight,
-            ringColor: Colors.pinkAccent,
+            ringColor: Colors.redAccent,
             ringDiameter: 500.0,
             ringWidth: 150.0,
             fabSize: 64.0,
             fabElevation: 8.0,
             fabIconBorder: CircleBorder(),
             fabColor: Colors.red,
-            fabOpenIcon: Icon(Icons.add, color: Colors.pink),
+            fabOpenIcon: Icon(Icons.add, color: Colors.white),
             fabCloseIcon: Icon(Icons.close, color: Colors.white),
             fabMargin: const EdgeInsets.all(16.0),
             animationDuration: const Duration(milliseconds: 800),
@@ -77,27 +65,37 @@ class _YoutubeState extends State<Youtube> with SingleTickerProviderStateMixin {
               _showSnackBar(context, "The menu is ${isOpen ? "open" : "closed"}");
             },
           children: <Widget>[
-                RawMaterialButton(
+            // Container(),
+              RawMaterialButton(
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ReelsWidget(),));
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>ReelsWidget(),));
+                super.dispose();
                 },
                 shape: CircleBorder(),
                 padding: const EdgeInsets.all(24.0),
-                child: Text("IG"),
+                child: Text("Instagram",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold),
+                ),
               ),
-          
-                            RawMaterialButton(
-               onPressed: (){},
+              RawMaterialButton(
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>ReelsWidget(),));
+                super.dispose();
+                },
                 shape: CircleBorder(),
                 padding: const EdgeInsets.all(24.0),
-                child: Container(width:   30,
-                height: 30,
-                decoration: BoxDecoration(
-                  image: DecorationImage(image: AssetImage("assets/images/ig.png"))
-                ),),
+                child: Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage("assets/images/ig.png"))),
+                ),
               ),
-          
-          ]
+              // Container()
+            ]
         ),
        
         body: SafeArea(
@@ -163,7 +161,7 @@ class _YoutubeState extends State<Youtube> with SingleTickerProviderStateMixin {
                             Padding(
                               padding: EdgeInsets.fromLTRB(20, 40, 0, 0),
                               child: Text(
-                                'Facebook',
+                                'Youtube',
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                   fontFamily: 'Montserrat',
@@ -192,7 +190,7 @@ class _YoutubeState extends State<Youtube> with SingleTickerProviderStateMixin {
                                 // onFieldSubmitted: hasSubmitted,
                                 obscureText: false,
                                 decoration: InputDecoration(
-                                  labelText: 'FB Video Link',
+                                  labelText: 'Youtube URL Link',
                                   labelStyle: TextStyle(
                                     color: Colors.white,
                                     fontFamily: 'Lexend Deca',
@@ -250,10 +248,7 @@ class _YoutubeState extends State<Youtube> with SingleTickerProviderStateMixin {
                                hasTapped =true;
                              });
                            },
-                            child: Transform.scale(
-                              scale: _scale,
-                              child: _animatedButtonUI,
-                            ),
+                            child: _animatedButtonUI,
                           ),
                         ),
                       )
@@ -269,7 +264,7 @@ class _YoutubeState extends State<Youtube> with SingleTickerProviderStateMixin {
                           child: Container(
                             width: 300,
                             height: 100,
-                            child:  LottieBuilder.asset('assets/lottie/social_media.json'),
+                            child:  LottieBuilder.asset('assets/lottie/yt.json'),
                           ),
                         ),
                       ):Expanded(
