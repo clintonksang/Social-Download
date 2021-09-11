@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:social_downloader/screens/reels.dart';
-
+import 'package:social_downloader/widgets/onboardingmodel.dart';
 void main() {
 
   runApp(MyApp());
@@ -25,7 +23,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: ReelsWidget(),
+      home: OnboardingExample(),
     );
   }
 }
