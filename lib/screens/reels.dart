@@ -9,8 +9,6 @@ import 'package:social_downloader/screens/youtube.dart';
 class ReelsWidget extends StatefulWidget {
   final GlobalKey<FabCircularMenuState> fabKey = GlobalKey();
 
-  ReelsWidget({Key? key}) : super(key: key);
-
   @override
   _ReelsWidgetState createState() => _ReelsWidgetState();
 }
@@ -52,10 +50,12 @@ class _ReelsWidgetState extends State<ReelsWidget>
 
   // REELS
   void initializeDownloader() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    await FlutterDownloader.initialize(
-        debug: false // optional: set false to disable printing logs to console
-        );
+    super.dispose();
+    Future.delayed(Duration(milliseconds: 100),()async{
+WidgetsFlutterBinding.ensureInitialized();
+FlutterDownloader.initialize(
+  debug: true // optional: set false to disable printing logs to console
+);});
   }
 
   TextEditingController textController = TextEditingController();

@@ -25,7 +25,7 @@ class _YoutubeState extends State<Youtube> {
    TextEditingController textController = TextEditingController();
   @override
   void initState() {
- 
+//  disposew();
     super.initState();
   }
 
@@ -35,8 +35,7 @@ class _YoutubeState extends State<Youtube> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
-  void dispose() {
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +68,7 @@ class _YoutubeState extends State<Youtube> {
               RawMaterialButton(
                 onPressed: () {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>ReelsWidget(),));
-                super.dispose();
+                disposew();
                 },
                 shape: CircleBorder(),
                 padding: const EdgeInsets.all(24.0),
@@ -82,7 +81,7 @@ class _YoutubeState extends State<Youtube> {
               RawMaterialButton(
                 onPressed: () {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>ReelsWidget(),));
-                super.dispose();
+                disposew();
                 },
                 shape: CircleBorder(),
                 padding: const EdgeInsets.all(24.0),
@@ -125,7 +124,7 @@ class _YoutubeState extends State<Youtube> {
                       Padding(
                         padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                         child: Text(
-                          'Facebook Downloader',
+                          'Youtube \nDownloader',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontFamily: 'Lexend Deca',
@@ -366,5 +365,10 @@ class _YoutubeState extends State<Youtube> {
         final result = await FlutterYoutubeDownloader.downloadVideo(
             textController.text, "Video Title goes Here", 18);
         print(result);
+      }
+      void disposew(){
+  setState(() {
+    super.dispose();
+  });
       }
 }
