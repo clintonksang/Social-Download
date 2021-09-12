@@ -1,3 +1,4 @@
+import 'package:fb_audience_network/fb_audience_network.dart';
 import 'package:flutter/material.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -17,6 +18,11 @@ class _ReelsWidgetState extends State<ReelsWidget>
     with SingleTickerProviderStateMixin {
   // SingleTickerProviderStateMixin {
 
+    bool isInterstitialAdLoaded = false;
+  bool isRewardedAdLoaded = false;
+  bool isRewardedVideoComplete = false;
+
+
 // REELS
   FlutterInsta flutterInsta =
       FlutterInsta(); // create instance of FlutterInsta class
@@ -32,6 +38,14 @@ class _ReelsWidgetState extends State<ReelsWidget>
   @override
   void initState() {
     // REELS
+    loadInterstitialAd();
+loadRewardedVideoAd();
+
+  FacebookAudienceNetwork.init(
+    
+      testingId: "b9f2908b-1a6b-4a5b-b862-ded7ce289e41",
+    );
+
     initializeDownloader();
 
     textController = TextEditingController();
@@ -47,6 +61,73 @@ class _ReelsWidgetState extends State<ReelsWidget>
       });
     super.initState();
   }
+
+  //ads
+      void loadInterstitialAd() {
+    FacebookInterstitialAd.loadInterstitialAd(
+      placementId:
+          "539689593325231_875257409768446", //"IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617" YOUR_PLACEMENT_ID
+      listener: (result, value) {
+        print(">> FAN > Interstitial Ad: $result --> $value");
+        if (result == InterstitialAdResult.LOADED)
+        isInterstitialAdLoaded = true;
+
+        /// Once an Interstitial Ad has been dismissed and becomes invalidated,
+        /// load a fresh Ad by calling this function.
+        if (result == InterstitialAdResult.DISMISSED &&
+            value["invalidated"] == true) {
+          isInterstitialAdLoaded = false;
+          loadInterstitialAd();
+        }
+      },
+    );
+  }
+
+  showInterstitialAd() {
+     if (isInterstitialAdLoaded == true)
+      FacebookInterstitialAd.showInterstitialAd();
+    else
+      print("Interstial Ad not yet loaded!");
+  }
+
+   showRewardedAd() {
+    if (isRewardedAdLoaded == true)
+      FacebookRewardedVideoAd.showRewardedVideoAd();
+    else
+      print("Rewarded Ad not yet loaded!");
+  }
+
+  showBannerAd() {
+  FacebookBannerAd(
+        // placementId:
+        //     "IMG_16_9_APP_INSTALL#2312433698835503_2964944860251047", //testid
+        bannerSize: BannerSize.STANDARD,
+        listener: (result, value) {
+          print("Banner Ad: $result -->  $value");
+        },
+      );
+  }
+
+    void loadRewardedVideoAd() {
+    FacebookRewardedVideoAd.loadRewardedVideoAd(
+      placementId: "539689593325231_875239713103549",
+      listener: (result, value) {
+        print("Rewarded Ad: $result --> $value");
+        if (result == RewardedVideoAdResult.LOADED) isRewardedAdLoaded = true;
+        if (result == RewardedVideoAdResult.VIDEO_COMPLETE)
+          isRewardedVideoComplete = true;
+
+        /// Once a Rewarded Ad has been closed and becomes invalidated,
+        /// load a fresh Ad by calling this function.
+        if (result == RewardedVideoAdResult.VIDEO_CLOSED &&
+            (value == true || value["invalidated"] == true)) {
+          isRewardedAdLoaded = false;
+          loadRewardedVideoAd();
+        }
+      },
+    );
+  }
+
 
   // REELS
   void initializeDownloader() async {
@@ -88,7 +169,9 @@ FlutterDownloader.initialize(
             fabIconBorder: CircleBorder(),
             fabColor: Colors.black,
             fabOpenIcon: Icon(Icons.add, color: Colors.pink),
-            fabCloseIcon: Icon(Icons.close, color: Colors.pink),
+            fabCloseIcon: Icon(
+              
+              Icons.close, color: Colors.pink),
             fabMargin: const EdgeInsets.all(16.0),
             animationDuration: const Duration(milliseconds: 800),
             animationCurve: Curves.easeInOutCirc,
@@ -146,11 +229,17 @@ FlutterDownloader.initialize(
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      Image.asset(
-                        'assets/images/logonobg.png',
-                        width: 80,
-                        height: 80,
-                        fit: BoxFit.contain,
+                      GestureDetector(
+                        onTap: (){
+                          loadInterstitialAd();
+                          // showInterstitialAd();
+                        },
+                        child: Image.asset(
+                          'assets/images/logonobg.png',
+                          width: 80,
+                          height: 80,
+                          fit: BoxFit.contain,
+                        ),
                       ),
                       Padding(
                         padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
@@ -272,8 +361,11 @@ FlutterDownloader.initialize(
                                       child: GestureDetector(
                                         onTap: () {
                                           download();
+                                          loadRewardedVideoAd
+();
                                           setState(() async {
                                             hasTapped = true;
+                                            
                                           });
                                         },
                                         child: _animatedButtonUI,
@@ -369,6 +461,7 @@ FlutterDownloader.initialize(
 //REELS
 //Download reel video on button clickl
   void download() async {
+        loadRewardedVideoAd();
     var myvideourl = await flutterInsta.downloadReels(textController.text);
 
     await FlutterDownloader.enqueue(

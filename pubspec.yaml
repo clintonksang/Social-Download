@@ -25,7 +25,6 @@ dependencies:
   concentric_transition: ^1.0.1+1
   cupertino_icons: ^1.0.2
   fab_circular_menu: ^1.0.2
-  facebook_audience_network: ^0.9.0
   flutter:
     sdk: flutter
   flutter_downloader: ^1.6.1
@@ -35,6 +34,10 @@ dependencies:
   fluttertoast: ^8.0.8
   lottie: ^1.1.0
   onboarding: ^2.1.0
+  fb_audience_network:
+    git:
+      url: git://github.com/clintonksang/fb_audience_network.git
+      ref: master  
 
 dev_dependencies:
   flutter_test:
