@@ -18,14 +18,12 @@ class _ReelsWidgetState extends State<ReelsWidget>
     with SingleTickerProviderStateMixin {
   // SingleTickerProviderStateMixin {
 
-    bool isInterstitialAdLoaded = false;
+  bool isInterstitialAdLoaded = false;
   bool isRewardedAdLoaded = false;
   bool isRewardedVideoComplete = false;
 
-
 // REELS
-  FlutterInsta flutterInsta =
-      FlutterInsta(); // create instance of FlutterInsta class
+  FlutterInsta flutterInsta = FlutterInsta(); // create instance of FlutterInsta class
   TextEditingController usernameController = TextEditingController();
   bool pressed = false;
 
@@ -39,10 +37,9 @@ class _ReelsWidgetState extends State<ReelsWidget>
   void initState() {
     // REELS
     loadInterstitialAd();
-loadRewardedVideoAd();
+    loadRewardedVideoAd();
 
-  FacebookAudienceNetwork.init(
-    
+    FacebookAudienceNetwork.init(
       testingId: "b9f2908b-1a6b-4a5b-b862-ded7ce289e41",
     );
 
@@ -63,14 +60,14 @@ loadRewardedVideoAd();
   }
 
   //ads
-      void loadInterstitialAd() {
+  void loadInterstitialAd() {
     FacebookInterstitialAd.loadInterstitialAd(
       placementId:
           "539689593325231_875257409768446", //"IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617" YOUR_PLACEMENT_ID
       listener: (result, value) {
         print(">> FAN > Interstitial Ad: $result --> $value");
         if (result == InterstitialAdResult.LOADED)
-        isInterstitialAdLoaded = true;
+          isInterstitialAdLoaded = true;
 
         /// Once an Interstitial Ad has been dismissed and becomes invalidated,
         /// load a fresh Ad by calling this function.
@@ -84,13 +81,13 @@ loadRewardedVideoAd();
   }
 
   showInterstitialAd() {
-     if (isInterstitialAdLoaded == true)
+    if (isInterstitialAdLoaded == true)
       FacebookInterstitialAd.showInterstitialAd();
     else
       print("Interstial Ad not yet loaded!");
   }
 
-   showRewardedAd() {
+  showRewardedAd() {
     if (isRewardedAdLoaded == true)
       FacebookRewardedVideoAd.showRewardedVideoAd();
     else
@@ -98,17 +95,17 @@ loadRewardedVideoAd();
   }
 
   showBannerAd() {
-  FacebookBannerAd(
-        // placementId:
-        //     "IMG_16_9_APP_INSTALL#2312433698835503_2964944860251047", //testid
-        bannerSize: BannerSize.STANDARD,
-        listener: (result, value) {
-          print("Banner Ad: $result -->  $value");
-        },
-      );
+    FacebookBannerAd(
+      // placementId:
+      //     "IMG_16_9_APP_INSTALL#2312433698835503_2964944860251047", //testid
+      bannerSize: BannerSize.STANDARD,
+      listener: (result, value) {
+        print("Banner Ad: $result -->  $value");
+      },
+    );
   }
 
-    void loadRewardedVideoAd() {
+  void loadRewardedVideoAd() {
     FacebookRewardedVideoAd.loadRewardedVideoAd(
       placementId: "539689593325231_875239713103549",
       listener: (result, value) {
@@ -128,15 +125,15 @@ loadRewardedVideoAd();
     );
   }
 
-
   // REELS
   void initializeDownloader() async {
     super.dispose();
-    Future.delayed(Duration(milliseconds: 100),()async{
-WidgetsFlutterBinding.ensureInitialized();
-FlutterDownloader.initialize(
-  debug: true // optional: set false to disable printing logs to console
-);});
+    Future.delayed(Duration(milliseconds: 100), () async {
+      WidgetsFlutterBinding.ensureInitialized();
+      FlutterDownloader.initialize(
+          debug: true // optional: set false to disable printing logs to console
+          );
+    });
   }
 
   TextEditingController textController = TextEditingController();
@@ -169,9 +166,7 @@ FlutterDownloader.initialize(
             fabIconBorder: CircleBorder(),
             fabColor: Colors.black,
             fabOpenIcon: Icon(Icons.add, color: Colors.pink),
-            fabCloseIcon: Icon(
-              
-              Icons.close, color: Colors.pink),
+            fabCloseIcon: Icon(Icons.close, color: Colors.pink),
             fabMargin: const EdgeInsets.all(16.0),
             animationDuration: const Duration(milliseconds: 800),
             animationCurve: Curves.easeInOutCirc,
@@ -182,23 +177,27 @@ FlutterDownloader.initialize(
             children: <Widget>[
               // Container(),
               RawMaterialButton(
-                onPressed: ()  {
-                   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>Youtube(),));
-                super.dispose();
-               },
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => Youtube(),
+                  ));
+                  super.dispose();
+                },
                 shape: CircleBorder(),
                 padding: const EdgeInsets.all(24.0),
-                child: Text("Youtube",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold),
+                child: Text(
+                  "Youtube",
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ),
               RawMaterialButton(
                 onPressed: () {
-                   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>Youtube(),));
-                super.dispose();
-               },
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => Youtube(),
+                  ));
+                  super.dispose();
+                },
                 shape: CircleBorder(),
                 padding: const EdgeInsets.all(24.0),
                 child: Container(
@@ -230,7 +229,7 @@ FlutterDownloader.initialize(
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           loadInterstitialAd();
                           // showInterstitialAd();
                         },
@@ -361,11 +360,9 @@ FlutterDownloader.initialize(
                                       child: GestureDetector(
                                         onTap: () {
                                           download();
-                                          loadRewardedVideoAd
-();
+                                          loadRewardedVideoAd();
                                           setState(() async {
                                             hasTapped = true;
-                                            
                                           });
                                         },
                                         child: _animatedButtonUI,
@@ -461,7 +458,7 @@ FlutterDownloader.initialize(
 //REELS
 //Download reel video on button clickl
   void download() async {
-        loadRewardedVideoAd();
+    loadRewardedVideoAd();
     var myvideourl = await flutterInsta.downloadReels(textController.text);
 
     await FlutterDownloader.enqueue(
