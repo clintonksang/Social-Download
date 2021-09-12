@@ -85,13 +85,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
-  facebook_audience_network:
-    dependency: "direct main"
-    description:
-      name: facebook_audience_network
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.9.0"
   fake_async:
     dependency: transitive
     description:
@@ -99,6 +92,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
+  fb_audience_network:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: master
+      resolved-ref: d1f347c483b6c24a94d5a1474079103ab55e0992
+      url: "git://github.com/clintonksang/fb_audience_network.git"
+    source: git
+    version: "1.0.0-nullsafety.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -276,3 +278,4 @@ packages:
 sdks:
   dart: ">=2.12.0 <3.0.0"
   flutter: ">=2.2.2"
+  version: "1.0.0+1"

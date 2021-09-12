@@ -1,13 +1,12 @@
+import 'package:fb_audience_network/fb_audience_network.dart';
 import 'package:flutter/material.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_insta/flutter_insta.dart';
 import 'package:flutter_youtube_downloader/flutter_youtube_downloader.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'dart:async';
-
 import 'package:social_downloader/screens/reels.dart';
 class Youtube extends StatefulWidget {
 
@@ -21,15 +20,86 @@ class _YoutubeState extends State<Youtube> {
 
 // FB END
   bool hasTapped = false;
-
+   bool isInterstitialAdLoaded = false;
+  bool isRewardedAdLoaded = false;
+  bool isRewardedVideoComplete = false;
    TextEditingController textController = TextEditingController();
   @override
   void initState() {
-//  disposew();
+loadInterstitialAd();
+loadRewardedVideoAd();
+
+  FacebookAudienceNetwork.init(
+    
+      testingId: "b9f2908b-1a6b-4a5b-b862-ded7ce289e41",
+    );
+
     super.initState();
   }
+    void loadInterstitialAd() {
+    FacebookInterstitialAd.loadInterstitialAd(
+      placementId:
+          "539689593325231_875257409768446", //"IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617" YOUR_PLACEMENT_ID
+      listener: (result, value) {
+        print(">> FAN > Interstitial Ad: $result --> $value");
+        if (result == InterstitialAdResult.LOADED)
+        isInterstitialAdLoaded = true;
 
-  
+        /// Once an Interstitial Ad has been dismissed and becomes invalidated,
+        /// load a fresh Ad by calling this function.
+        if (result == InterstitialAdResult.DISMISSED &&
+            value["invalidated"] == true) {
+          isInterstitialAdLoaded = false;
+          loadInterstitialAd();
+        }
+      },
+    );
+  }
+
+  showInterstitialAd() {
+     if (isInterstitialAdLoaded == true)
+      FacebookInterstitialAd.showInterstitialAd();
+    else
+      print("Interstial Ad not yet loaded!");
+  }
+
+   showRewardedAd() {
+    if (isRewardedAdLoaded == true)
+      FacebookRewardedVideoAd.showRewardedVideoAd();
+    else
+      print("Rewarded Ad not yet loaded!");
+  }
+
+  showBannerAd() {
+  FacebookBannerAd(
+        // placementId:
+        //     "IMG_16_9_APP_INSTALL#2312433698835503_2964944860251047", //testid
+        bannerSize: BannerSize.STANDARD,
+        listener: (result, value) {
+          print("Banner Ad: $result -->  $value");
+        },
+      );
+  }
+
+    void loadRewardedVideoAd() {
+    FacebookRewardedVideoAd.loadRewardedVideoAd(
+      placementId: "539689593325231_875239713103549",
+      listener: (result, value) {
+        print("Rewarded Ad: $result --> $value");
+        if (result == RewardedVideoAdResult.LOADED) isRewardedAdLoaded = true;
+        if (result == RewardedVideoAdResult.VIDEO_COMPLETE)
+          isRewardedVideoComplete = true;
+
+        /// Once a Rewarded Ad has been closed and becomes invalidated,
+        /// load a fresh Ad by calling this function.
+        if (result == RewardedVideoAdResult.VIDEO_CLOSED &&
+            (value == true || value["invalidated"] == true)) {
+          isRewardedAdLoaded = false;
+          loadRewardedVideoAd();
+        }
+      },
+    );
+  }
 
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -62,6 +132,7 @@ class _YoutubeState extends State<Youtube> {
             animationCurve: Curves.easeInOutCirc,
             onDisplayChange: (isOpen) {
               _showSnackBar(context, "The menu is ${isOpen ? "open" : "closed"}");
+            
             },
           children: <Widget>[
             // Container(),
@@ -115,11 +186,18 @@ class _YoutubeState extends State<Youtube> {
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      Image.asset(
-                        'assets/images/logonobg.png',
-                        width: 80,
-                        height: 80,
-                        fit: BoxFit.contain,
+                      GestureDetector(
+                        onTap: (){
+                          loadInterstitialAd();
+                          showInterstitialAd();
+                          // loadRewardedVideoAd();
+                          },
+                        child: Image.asset(
+                          'assets/images/logonobg.png',
+                          width: 80,
+                          height: 80,
+                          fit: BoxFit.contain,
+                        ),
                       ),
                       Padding(
                         padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
@@ -245,6 +323,7 @@ class _YoutubeState extends State<Youtube> {
                              downloadVideo();
                              setState(() async{
                                hasTapped =true;
+                               
                              });
                            },
                             child: _animatedButtonUI,
@@ -339,31 +418,13 @@ class _YoutubeState extends State<Youtube> {
         )
     );
   }
-//REELS
-//Download reel video on button clickl
-  // void download() async {
-  
 
-  // // facebook
-  //   // var myvideourl = await flutterInsta.downloadReels(textController.text);
-
-  //   // await FlutterDownloader.enqueue(
-  //   //   url: '$myvideourl',
-  //   //   savedDir: '/sdcard/Download',
-  //   //   showNotification: true,
-  //   //   // show download progress in status bar (for Android)
-  //   //   openFileFromNotification: true, // click on notification to open downloaded file (for Android)
-  //   // ).whenComplete(() {
-  //   //   Fluttertoast.showToast(msg: "Download Has Started");
-  //   //   setState(() {
-  //   //     hasTapped = false; // set to false to stop Progress indicator
-  //   //   });
-  //   // });
-  // }
 
       Future<void> downloadVideo() async {
+        loadInterstitialAd();
+        showInterstitialAd();
         final result = await FlutterYoutubeDownloader.downloadVideo(
-            textController.text, "Video Title goes Here", 18);
+            textController.text, "Social Downloader", 18);
         print(result);
       }
       void disposew(){
@@ -372,3 +433,4 @@ class _YoutubeState extends State<Youtube> {
   });
       }
 }
+

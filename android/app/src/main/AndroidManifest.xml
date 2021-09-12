@@ -6,7 +6,7 @@ package="com.example.social_downloader">
    <application
         tools:replace="android:label" 
         android:requestLegacyExternalStorage="true"
-        android:label="social_downloader"
+        android:label="Social Download"
         android:icon="@mipmap/ic_launcher">
         <provider
         android:name="vn.hunghd.flutterdownloader.DownloadedFileProvider"
